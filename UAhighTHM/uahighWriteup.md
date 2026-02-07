@@ -34,10 +34,12 @@ I checked for a cmd parameter and found out that we do have a cmd here and that 
 I tried putting a fewcommon one line reverse shells in the argument but none of them worked. So to get the reverse shell, I created a http server on my machine and downloaded the shell code on the target machine. After Executing the shell code, I was able to successfully get a reverse shell.
 
 ![server](./server.png)
-![nc](./nc.png)
-![download](./download.png)
-![shell](./shell.png)
 
+![nc](./nc.png)
+
+![download](./download.png)
+
+![shell](./shell.png)
 
 ### Enumeration
 
