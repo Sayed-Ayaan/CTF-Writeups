@@ -6,7 +6,7 @@ Room: [https://tryhackme.com/room/yueiua](https://tryhackme.com/room/yueiua)
 
 We will first run nmap on our target ip machine to find which ports are open and what services they are running.
 
-![Nmap](./nmap.png)
+![Nmap](./images/nmap.png)
 
 we can see that we have two ports open.
 
@@ -22,76 +22,76 @@ Opening the http file, we are greeted with a home page. I looked at the html cod
 
 Since I couldn't find anything on the home pages, I decided to run gobuster.
 
-![gobuster](./gobuster.png)
+![gobuster](./images/gobuster.png)
 
 We found a directory called /assets and when i open it, we are greeted with a blank page. I couldn't find anything here so i decided to do some common checks before enumerating even more here.
 
 I checked for a cmd parameter and found out that we do have a cmd here and that it was returning us the output in base64 format.
-![cmd](./cmd.png)
+![cmd](./images/cmd.png)
 
 ### Getting a Shell
 
 I tried putting a fewcommon one line reverse shells in the argument but none of them worked. So to get the reverse shell, I created a http server on my machine and downloaded the shell code on the target machine. After Executing the shell code, I was able to successfully get a reverse shell.
 
-![server](./server.png)
+![server](./images/server.png)
 
-![nc](./nc.png)
+![nc](./images/nc.png)
 
-![download](./download.png)
+![download](./images/download.png)
 
-![shell](./shell.png)
+![shell](./images/shell.png)
 
 ### Enumeration
 
 I found a file called passphrase.txt which containted base64 string. I decoded the string and got a password. 
 
-![pass](./pass.png)
+![pass](./images/pass.png)
 
 I first thought that i could use this to gain access as deku who is the user by either ssh or su but that didn't work. So i kept enumerating.
 
 I found two images which i downloaded on my machine thinking as the file was called passphrase, maybe we have to use steghide.
-![img](./img.png)
+![img](./images/img.png)
 
 ### Steghide
 
 when i run steghide on oneforall.jpg, it gave me an error saying that the file format is not supported. Checking the magicbytes using hexeditor, we can see the magic bytes is for png.
 
-![png](./png.png)
+![png](./images/png.png)
 
 So we have to replace the magic bytes to jpg.
 
-![jpg](./jpg.png)
+![jpg](./images/jpg.png)
 
 Once we have done that, we can extract the data embedded in the image using steghide. We found a creds.txt which contained  the password for deku.
 
-![steg](./steg.png)
+![steg](./images/steg.png)
 
-![creds](./creds.png)
+![creds](./images/creds.png)
 
 ### User.txt
 
 Now we can switch to deku and read the user.txt flag.
 
-![user](./user.png)
+![user](./images/user.png)
 
 ## Getting root
 
 Running sudo -l, we can find a file called feedback.sh.
 
-![sudo](./sudo.png)
+![sudo](./images/sudo.png)
 
 Let's read the content of feedback.sh
 
-![feedback](./feedback.png)
+![feedback](./images/feedback.png)
 
 We can see the code is doing **eval "Echo $feedback"** which we can exploit to run our own scripts.
 
 We will write **deku ALL=NOPASSWD: ALL >> /etc/sudoers** as feedback to add deku as a sudoer who can run everything as root with no password.
 
-![eval](./eval.png)
+![eval](./images/eval.png)
 
 ### root.txt
 
 Now we can read the root.txt by getting bash as root.
 
-![root](./root.png)
+![root](./images/root.png)
